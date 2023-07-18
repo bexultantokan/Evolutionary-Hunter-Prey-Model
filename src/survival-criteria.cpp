@@ -336,7 +336,19 @@ std::pair<bool, float> passedSurvivalCriterion(const Indiv &indiv, unsigned chal
                   std::pair<bool, float> { true, (radius - distance) / radius }
                 : std::pair<bool, float> { false, 0.0 };
         }
-
+    // hunter prey model
+    case CHALLENGE_HUNTER_PREY:
+        {
+            if (!indiv.isHunter) { // prey
+                return std::pair<bool, float> { true, 1.0 };
+            }
+            else if (indiv.eaten){  // hunter caught prey
+                return std::pair<bool, float> { true, double(indiv.eaten)/p.population};
+            }  
+            else { // hunter didn't catch prey
+                return std::pair<bool, float> { false, 0.0};
+            }
+        }
     default:
         assert(false);
     }

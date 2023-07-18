@@ -65,6 +65,9 @@ void ParamManager::setDefaults()
     privParams.RNGSeed = 12345678;
     privParams.graphLogUpdateCommand = "/usr/bin/gnuplot --persist ./tools/graphlog.gp";
     privParams.parameterChangeGenerationNumber = 0;
+    privParams.isHunterPrey = false;
+    privParams.percentHunter = 50;
+    privParams.eaten = 0;
 }
 
 
@@ -256,7 +259,16 @@ void ParamManager::ingestParameter(std::string name, std::string val)
             privParams.deterministic = bVal; break;
         }
         else if (name == "rngseed" && isUint) {
-            privParams.RNGSeed = uVal; break;
+            privParams.RNGSeed = uVal;break;
+        }
+        else if (name == "ishunterprey" && isBool) {
+            privParams.isHunterPrey = bVal; std:: cout << "Hunter-Prey Mode\n"; break;
+        }
+        else if (name == "percenthunter" && isUint && uVal <= 100 && uVal >= 0) {
+            privParams.percentHunter = uVal; break;
+        }
+        else if (name == "eaten" && isUint && uVal >= 0) {
+            privParams.eaten= uVal; break;
         }
         else {
             std::cout << "Invalid param: " << name << " = " << val << std::endl;

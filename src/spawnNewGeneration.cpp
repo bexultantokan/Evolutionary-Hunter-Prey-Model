@@ -7,7 +7,10 @@
 #include <cassert>
 #include "simulator.h"
 
+
 namespace BS {
+
+//uint16_t hunters, prey;
 
 extern std::pair<bool, float> passedSurvivalCriterion(const Indiv &indiv, unsigned challenge);
 
@@ -26,9 +29,15 @@ void initializeGeneration0()
 
     // Spawn the population. The peeps container has already been allocated,
     // just clear and reuse it
-    for (uint16_t index = 1; index <= p.population; ++index) {
-        peeps[index].initialize(index, grid.findEmptyLocation(), makeRandomGenome());
+    uint16_t hunters = p.percentHunter * p.population / 100;
+    uint16_t prey = p.population - hunters;
+    for (uint16_t index = 1; index <= hunters; ++index) {
+        peeps[index].initialize(index, grid.findEmptyLocation(), makeRandomGenome(), true);
     }
+    for (uint16_t index = hunters + 1; index <= p.population; ++index) {
+        peeps[index].initialize(index, grid.findEmptyLocation(), makeRandomGenome(), false);
+    }
+    std::cout << "Generation 0 initialized with " << hunters << " hunters and " << prey << " prey\n";
 }
 
 
@@ -37,7 +46,7 @@ void initializeGeneration0()
 // peeps containers have been allocated. This will erase the grid and signal
 // layers, then create a new population in the peeps container with random
 // locations and genomes derived from the container of parent genomes.
-void initializeNewGeneration(const std::vector<Genome> &parentGenomes, unsigned generation)
+void initializeNewGeneration(const std::vector<Genome> &parentGenomes, unsigned generation, uint16_t hunters, uint16_t prey)
 {
     extern Genome generateChildGenome(const std::vector<Genome> &parentGenomes);
 
@@ -46,14 +55,21 @@ void initializeNewGeneration(const std::vector<Genome> &parentGenomes, unsigned 
     grid.zeroFill();
     grid.createBarrier(p.barrierType);
     signals.zeroFill();
-
     // Spawn the population. This overwrites all the elements of peeps[]
-    for (uint16_t index = 1; index <= p.population; ++index) {
-        peeps[index].initialize(index, grid.findEmptyLocation(), generateChildGenome(parentGenomes));
+    // ADD HERE PROPORTIONAL HUNTER/PREY SPAWNING
+    uint16_t hunters_p = hunters * p.population / (hunters + prey);
+    for (uint16_t index = 1; index <= hunters_p; ++index) {
+        peeps[index].initialize(index, grid.findEmptyLocation(), makeRandomGenome(), true);
     }
+    for (uint16_t index = hunters_p + 1; index <= p.population; ++index) {
+        peeps[index].initialize(index, grid.findEmptyLocation(), makeRandomGenome(), false);
+    }
+    std::cout << "Generation " << generation << " initialized with " << hunters_p << " hunters and " << p.population - hunters_p << " prey\n";
 }
 
-
+//   for (uint16_t index = 1; index <= p.population; ++index) {
+//         peeps[index].initialize(index, grid.findEmptyLocation(), generateChildGenome(parentGenomes));
+//     }
 // At this point, the deferred death queue and move queue have been processed
 // and we are left with zero or more individuals who will repopulate the
 // world grid.
@@ -66,6 +82,8 @@ void initializeNewGeneration(const std::vector<Genome> &parentGenomes, unsigned 
 // Must be called in single-thread mode between generations.
 unsigned spawnNewGeneration(unsigned generation, unsigned murderCount)
 {
+    uint16_t hunters = 0;
+    uint16_t prey = 0; 
     unsigned sacrificedCount = 0; // for the altruism challenge
 
     extern void appendEpochLog(unsigned generation, unsigned numberSurvivors, unsigned murderCount);
@@ -88,7 +106,14 @@ unsigned spawnNewGeneration(unsigned generation, unsigned murderCount)
             // ToDo: if the parents no longer need their genome record, we could
             // possibly do a move here instead of copy, although it's doubtful that
             // the optimization would be noticeable.
+            
             if (passed.first && !peeps[index].nnet.connections.empty()) {
+                if (peeps[index].isHunter) {
+                    hunters++;
+                }
+                else {
+                    prey++;
+                }
                 parents.push_back( { index, passed.second } );
             }
         }
@@ -181,7 +206,7 @@ unsigned spawnNewGeneration(unsigned generation, unsigned murderCount)
 
     if (!parentGenomes.empty()) {
         // Spawn a new generation
-        initializeNewGeneration(parentGenomes, generation + 1);
+        initializeNewGeneration(parentGenomes, generation + 1, hunters, prey);
     } else {
         // Special case: there are no surviving parents: start the simulation over
         // from scratch with randomly-generated genomes

@@ -14,28 +14,30 @@ namespace BS {
 std::string sensorName(Sensor sensor)
 {
     switch(sensor) {
-    case AGE: return "age"; break;
-    case BOUNDARY_DIST: return "boundary dist"; break;
-    case BOUNDARY_DIST_X: return "boundary dist X"; break;
-    case BOUNDARY_DIST_Y: return "boundary dist Y"; break;
-    case LAST_MOVE_DIR_X: return "last move dir X"; break;
-    case LAST_MOVE_DIR_Y: return "last move dir Y"; break;
-    case LOC_X: return "loc X"; break;
-    case LOC_Y: return "loc Y"; break;
-    case LONGPROBE_POP_FWD: return "long probe population fwd"; break;
-    case LONGPROBE_BAR_FWD: return "long probe barrier fwd"; break;
-    case BARRIER_FWD: return "short probe barrier fwd-rev"; break;
-    case BARRIER_LR: return "short probe barrier left-right"; break;
-    case OSC1: return "osc1"; break;
-    case POPULATION: return "population"; break;
-    case POPULATION_FWD: return "population fwd"; break;
-    case POPULATION_LR: return "population LR"; break;
-    case RANDOM: return "random"; break;
-    case SIGNAL0: return "signal 0"; break;
-    case SIGNAL0_FWD: return "signal 0 fwd"; break;
-    case SIGNAL0_LR: return "signal 0 LR"; break;
-    case GENETIC_SIM_FWD: return "genetic similarity fwd"; break;
-    default: assert(false); break;
+        case AGE: return "age"; break;
+        case BOUNDARY_DIST: return "boundary dist"; break;
+        case BOUNDARY_DIST_X: return "boundary dist X"; break;
+        case BOUNDARY_DIST_Y: return "boundary dist Y"; break;
+        case LAST_MOVE_DIR_X: return "last move dir X"; break;
+        case LAST_MOVE_DIR_Y: return "last move dir Y"; break;
+        case LOC_X: return "loc X"; break;
+        case LOC_Y: return "loc Y"; break;
+        case LONGPROBE_POP_FWD: return "long probe population fwd"; break;
+        case LONGPROBE_BAR_FWD: return "long probe barrier fwd"; break;
+        case BARRIER_FWD: return "short probe barrier fwd-rev"; break;
+        case BARRIER_LR: return "short probe barrier left-right"; break;
+        case OSC1: return "osc1"; break;
+        case POPULATION: return "population"; break;
+        case POPULATION_FWD: return "population fwd"; break;
+        case POPULATION_LR: return "population LR"; break;
+        case RANDOM: return "random"; break;
+        case SIGNAL0: return "signal 0"; break;
+        case SIGNAL0_FWD: return "signal 0 fwd"; break;
+        case SIGNAL0_LR: return "signal 0 LR"; break;
+        case GENETIC_SIM_FWD: return "genetic similarity fwd"; break;
+        default: 
+            std::cout << sensor << " BUG\n";
+        assert(false); break;
     }
 }
 

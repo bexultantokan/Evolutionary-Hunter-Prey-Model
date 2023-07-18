@@ -56,6 +56,9 @@ struct Params {
     unsigned barrierType; // >= 0
     bool deterministic;
     unsigned RNGSeed; // >= 0
+    bool isHunterPrey; // 
+    unsigned percentHunter; // 0..100  The prey is computed as 100 - percentHunter
+    unsigned eaten;
 
     // These must not change after initialization
     uint16_t sizeX; // 2..0x10000
@@ -68,6 +71,7 @@ struct Params {
 
     // These are updated automatically and not set via the parameter file
     unsigned parameterChangeGenerationNumber; // the most recent generation number that an automatic parameter change occured at
+    
 };
 
 class ParamManager {

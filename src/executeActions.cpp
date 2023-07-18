@@ -67,7 +67,7 @@ evaluated multithreadedly.
 
 void executeActions(Indiv &indiv, std::array<float, Action::NUM_ACTIONS> &actionLevels)
 {
-    // Only a subset of all possible actions might be enabled (i.e., compiled in).
+    // Only a subset of all possible actions might be enabled (i.e., compiled in).  
     // This returns true if the specified action is enabled. See sensors-actions.h
     // for how to enable sensors and actions during compilation.
     auto isEnabled = [](enum Action action){ return (int)action < (int)Action::NUM_ACTIONS; };
