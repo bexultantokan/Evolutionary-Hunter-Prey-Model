@@ -35,9 +35,7 @@ std::string sensorName(Sensor sensor)
         case SIGNAL0_FWD: return "signal 0 fwd"; break;
         case SIGNAL0_LR: return "signal 0 LR"; break;
         case GENETIC_SIM_FWD: return "genetic similarity fwd"; break;
-        default: 
-            std::cout << sensor << " BUG\n";
-        assert(false); break;
+        default: assert(false); break;
     }
 }
 
