@@ -354,6 +354,25 @@ float Indiv::getSensor(Sensor sensorNum, unsigned simStep) const
         }
         break;
     }
+    case Sensor::FIND_NEIGHBORS:
+    {
+        // Returns a sensor value in the range 0.0..1.0 based on the number of
+        // neighbors in the local neighborhood.
+        unsigned countLocs = 0;
+        unsigned countNeighbors = 0;
+        Coord center = loc;
+
+        auto f = [&](Coord tloc) {
+            ++countLocs;
+            if (grid.isOccupiedAt(tloc)) {
+                ++countNeighbors;
+            }
+        };
+
+        visitNeighborhood(center, 1.5, f);
+        sensorVal = (float)countNeighbors / countLocs;
+        break;
+    }
     default:
         assert(false);
         break;

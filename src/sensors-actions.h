@@ -55,7 +55,7 @@ enum Sensor {
     SIGNAL0,           // W strength of signal0 in neighborhood
     SIGNAL0_FWD,       // W strength of signal0 in the forward-reverse axis
     SIGNAL0_LR,        // W strength of signal0 in the left-right axis
-    //FIND_NEIGHBORS,    // I locates neighbors around
+    FIND_NEIGHBORS,    // I locates neighbors around 
     NUM_SENSES,        // <<------------------ END OF ACTIVE SENSES MARKER
 };
 

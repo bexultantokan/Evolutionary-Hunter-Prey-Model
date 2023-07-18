@@ -35,6 +35,7 @@ std::string sensorName(Sensor sensor)
         case SIGNAL0_FWD: return "signal 0 fwd"; break;
         case SIGNAL0_LR: return "signal 0 LR"; break;
         case GENETIC_SIM_FWD: return "genetic similarity fwd"; break;
+        case FIND_NEIGHBORS: return "find neighbors"; break;
         default: assert(false); break;
     }
 }
@@ -92,6 +93,7 @@ std::string sensorShortName(Sensor sensor)
     case SIGNAL0_FWD: return "Sfd"; break;
     case SIGNAL0_LR: return "Slr"; break;
     case GENETIC_SIM_FWD: return "Gen"; break;
+    case FIND_NEIGHBORS: return "Nbr"; break;
     default: assert(false); break;
     }
 }
