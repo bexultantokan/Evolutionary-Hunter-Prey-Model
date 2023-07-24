@@ -83,6 +83,7 @@ enum Action {
     MOVE_LEFT,                // W
     MOVE_RIGHT,               // W
     MOVE_REVERSE,             // W
+    MOVE_FOLLOW_PREY,
     NUM_ACTIONS,       // <<----------------- END OF ACTIVE ACTIONS MARKER
     KILL_FORWARD,             // W
 };

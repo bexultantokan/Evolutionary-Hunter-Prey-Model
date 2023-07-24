@@ -62,6 +62,7 @@ std::string actionName(Action action)
     case MOVE_RL: return "move R-L"; break;
     case MOVE_RANDOM: return "move random"; break;
     case SET_LONGPROBE_DIST: return "set longprobe dist"; break;
+    case MOVE_FOLLOW_PREY: return "move follow prey"; break;
     default: assert(false); break;
     }
 }
@@ -121,6 +122,7 @@ std::string actionShortName(Action action)
     case MOVE_RL: return "MRL"; break;
     case MOVE_RANDOM: return "Mrn"; break;
     case SET_LONGPROBE_DIST: return "LPD"; break;
+    case MOVE_FOLLOW_PREY: return "MFP"; break;
     default: assert(false); break;
     }
 }

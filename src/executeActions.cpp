@@ -7,7 +7,6 @@
 #include <cassert>
 #include "simulator.h"
 #include "omp.h"
-
 namespace BS {
 
 // Given a factor in the range 0.0..1.0, return a bool with the
@@ -206,7 +205,38 @@ void executeActions(Indiv &indiv, std::array<float, Action::NUM_ACTIONS> &action
         offset = Dir::random8().asNormalizedCoord();
         moveX += offset.x * level;
         moveY += offset.y * level;
+        // std:: cout << "Move X, Y: " << moveX << ' ' << moveY << ' ' << offset.x << ' ' << offset.y << level << '\n';
     }
+
+    if (isEnabled(Action::MOVE_FOLLOW_PREY)) {
+        level = actionLevels[Action::MOVE_FOLLOW_PREY];
+
+        Coord center = indiv.loc;
+
+        auto f = [&](Coord tloc) {
+            if (grid.isOccupiedAt(tloc) ) {
+                auto individual = peeps.getIndiv(tloc);
+                if (!individual.isHunter) {
+                    if (tloc.x != center.x && tloc.y != center.y) {
+                        if (tloc.x > center.x) {
+                            moveX += offset.x * level / abs(tloc.y - center.y);
+                        } else if (tloc.x < center.x) {
+                            moveX -= offset.x * level / abs(tloc.y - center.y);
+                        }
+
+                        if (tloc.y > center.y) {
+                            moveY += offset.y * level / abs(tloc.x - center.x);
+                        } else if (tloc.y < center.y) {
+                            moveY -= offset.y * level / abs(tloc.x - center.x);
+                        }
+                    }
+                }
+            }
+        };
+        
+        visitNeighborhood(center, 2.5, f); 
+    }
+    
 
     // Convert the accumulated X, Y sums to the range -1.0..1.0 and scale by the
     // individual's responsiveness (0.0..1.0) (adjusted by a curve)
