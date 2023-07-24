@@ -139,10 +139,20 @@ bool ImageWriter::saveVideoFrame(unsigned simStep, unsigned generation)
         //todo!!!
         for (uint16_t index = 1; index <= p.population; ++index) {
             const Indiv &indiv = peeps[index];
+            // if (indiv.alive) {
+            //     data.indivLocs.push_back(indiv.loc);
+            //     data.indivColors.push_back(makeGeneticColor(indiv.genome));
+            // }
             if (indiv.alive) {
                 data.indivLocs.push_back(indiv.loc);
-                data.indivColors.push_back(makeGeneticColor(indiv.genome));
+                if (indiv.isHunter) {
+                    data.indivColors.push_back(100);
+                }
+                else {
+                    data.indivColors.push_back(200);
+                }
             }
+
         }
 
         auto const &barrierLocs = grid.getBarrierLocations();
@@ -180,10 +190,19 @@ bool ImageWriter::saveVideoFrameSync(unsigned simStep, unsigned generation)
     //todo!!!
     for (uint16_t index = 1; index <= p.population; ++index) {
         const Indiv &indiv = peeps[index];
+        // if (indiv.alive) {
+        //     data.indivLocs.push_back(indiv.loc);
+        //     data.indivColors.push_back(makeGeneticColor(indiv.genome));
+        // }
         if (indiv.alive) {
-            data.indivLocs.push_back(indiv.loc);
-            data.indivColors.push_back(makeGeneticColor(indiv.genome));
-        }
+                data.indivLocs.push_back(indiv.loc);
+                if (indiv.isHunter) {
+                    data.indivColors.push_back(100);
+                }
+                else {
+                    data.indivColors.push_back(200);
+                }
+            }
     }
 
     auto const &barrierLocs = grid.getBarrierLocations();
